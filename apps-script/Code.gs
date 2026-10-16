@@ -7,6 +7,7 @@ const AVON = Object.freeze({
   limits: { FullName: 120, Email: 254, Street: 240, Town: 100, Postcode: 12, AvonItems: 4000 },
   maxDailyOrders: 120,
   maxDailyEmailOrders: 5,
+  notificationEmail: 'pfay970@gmail.com',
   protocol: 'prettyus-avon-order-v1'
 });
 
@@ -14,6 +15,8 @@ const AVON = Object.freeze({
 // No row is added, removed or changed. Keep this first for mobile users.
 function verifyOrderSheet() {
   orderSheet_();
+  // Requests Google's separate send-email permission without sending an email.
+  MailApp.getRemainingDailyQuota();
   PropertiesService.getScriptProperties().setProperty('ORDER_RECEIVER_ENABLED', 'true');
   console.log('Existing Sheet1 and six headings verified. Receiver enabled. No order submitted.');
 }
@@ -77,6 +80,7 @@ function doPost(event) {
     SpreadsheetApp.flush();
     // A success acknowledgement is emitted only after the row write completes.
     props.setProperties({ [receiptKey]: fingerprint, [countKey]: String(count + 1), [emailKey]: String(emailCount + 1) });
+    notifyOrderOwner_(values);
     return respond('saved');
   } catch (error) {
     // Don't log customer data or raw exception text. A write may have succeeded
@@ -85,6 +89,24 @@ function doPost(event) {
     return respond(writeStarted ? 'unknown' : 'rejected');
   } finally {
     lock.releaseLock();
+  }
+}
+
+function notifyOrderOwner_(values) {
+  // Saving the order is authoritative. Email is best effort and never retried
+  // by a duplicate POST, so email errors cannot cause duplicate order rows.
+  try {
+    if (MailApp.getRemainingDailyQuota() < 1) throw new Error('Mail quota unavailable');
+    MailApp.sendEmail({
+      to: AVON.notificationEmail,
+      subject: 'PrettyUs: new Avon order saved',
+      name: 'PrettyUs',
+      body: 'A new Avon order has been saved in Sheet1.\n\n' +
+        AVON.headers.map((heading, i) => heading + ': ' + values[i]).join('\n\n') +
+        '\n\nView orders: https://docs.google.com/spreadsheets/d/' + AVON.spreadsheetId + '/edit'
+    });
+  } catch (error) {
+    console.error('Order saved, but owner email notification failed. Check MailApp authorisation and daily quota.');
   }
 }
 

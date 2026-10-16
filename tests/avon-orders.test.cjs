@@ -5,7 +5,7 @@ const vm = require('node:vm');
 const crypto = require('node:crypto');
 const source = fs.readFileSync(require('node:path').join(__dirname, '../apps-script/Code.gs'), 'utf8');
 function receiver(options = {}) {
-  const state = { ORDER_RECEIVER_ENABLED: 'true' }, rows = [];
+  const state = { ORDER_RECEIVER_ENABLED: 'true' }, rows = [], emails = [];
   const properties = {
     getProperty: k => state[k] || null,
     setProperty(k,v) { state[k] = v; },
@@ -21,6 +21,8 @@ function receiver(options = {}) {
     appendRow(values) { if(options.writeFailure) throw Error('private error'); rows.push(values); }
   };
   const c = {
+    MailApp: { getRemainingDailyQuota: () => options.noMailQuota ? 0 : 100,
+      sendEmail(message) { if (options.mailFailure) throw Error('mail failure'); assert.equal(rows.length > 0, true); emails.push(message); } },
     console: { log() {}, error() {} },
     PropertiesService: { getScriptProperties: () => properties },
     LockService: { getScriptLock: () => ({ tryLock: () => !options.busy, releaseLock() {} }) },
@@ -33,7 +35,7 @@ function receiver(options = {}) {
     ContentService: { createTextOutput: text => ({ text, setMimeType() { return this; } }), MimeType: { JSON:1 } }
   };
   vm.createContext(c);vm.runInContext(source,c);
-  return { c, rows, state };
+  return { c, rows, state, emails };
 }
 function order(overrides = {}) {
   return { parameter: { FullName:'TEST ONLY', Email:'prettyus-test@example.invalid', Street:'TEST STREET', Town:'Hailsham',
@@ -79,4 +81,21 @@ test('per-email abuse limit rejects excess orders and keeps small bounded proper
     assert.match(result.html, i<5 ? /"status":"saved"/ : /"status":"rejected"/);
   }
   assert.equal(r.rows.length,5);assert.ok(Object.values(r.state).every(value=>value.length<9000));
+});
+
+test('emails only the owner after saving, and duplicate or rejected posts send no additional email', () => {
+  const r=receiver(); r.c.verifyOrderSheet(); assert.equal(r.emails.length,0);
+  r.c.doPost(order()); r.c.doPost(order()); r.c.doPost(order({Email:'invalid'}));
+  assert.equal(r.emails.length,1); assert.equal(r.emails[0].to,'pfay970@gmail.com');
+  for (const value of Object.values(order().parameter).slice(0,6)) assert.ok(r.emails[0].body.includes(value));
+  for (const options of [{writeFailure:true},{receiptFailure:true}]) {
+    const failed=receiver(options); failed.c.doPost(order()); assert.equal(failed.emails.length,0);
+  }
+});
+test('email failures and exhausted quotas preserve saved orders and successful acknowledgement', () => {
+  for (const options of [{mailFailure:true},{noMailQuota:true}]) {
+    const r=receiver(options); assert.match(r.c.doPost(order()).html,/"status":"saved"/);
+    assert.match(r.c.doPost(order()).html,/"status":"saved"/);
+    assert.equal(r.rows.length,1); assert.equal(r.emails.length,0);
+  }
 });

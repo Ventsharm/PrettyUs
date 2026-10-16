@@ -21,7 +21,23 @@ or script-property values to this repository.
 - A new saved script version must be assigned to the existing deployment after
   server-code changes. Saving editor code alone does not update `/exec`.
 - Google account/OAuth authorisation uses the existing custom Desktop client.
-  There are no Firebase changes, new spreadsheets, paid services or email services.
+  There are no Firebase changes, new spreadsheets, paid services or external email providers.
+
+## Owner email alerts
+
+After a new order is saved and its receipt committed, MailApp sends the six order
+details and spreadsheet link to the fixed owner address `pfay970@gmail.com`.
+Customer input cannot choose the recipient. Duplicate requests do not resend it.
+Email failure never undoes a saved order or claims that saving failed; a generic
+execution error records the email issue without logging customer data.
+
+The owner must run `verifyOrderSheet` again and approve Google's send-email
+permission before the email-enabled version is assigned to the existing deployment.
+That setup check sends no email and adds no rows. Existing saved orders are not
+emailed retrospectively. MailApp uses Google's free daily recipient quota (normally
+100/day for consumer accounts, shared with other scripts and subject to change).
+Orders can still save when email quota is exhausted; email delivery is best effort
+and has no automatic retry. No billing or paid email provider is enabled.
 
 ## Submission and confirmation
 

@@ -1,7 +1,7 @@
 
 :root{--purple:#8045cd;--deep:#5a289a;--bg:#f7f3fd;--ink:#292138;--muted:#756b81;--line:#e8dcf5;--max:920px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#f4effc 0%,#fff 60%);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:16px;line-height:1.65}
-a{color:#6230a4}a[href*="prettyus-rules"],a[href*="22-prettyus-rules"],a[href*="rules.html"]{display:none!important}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #b17bed;outline-offset:3px}
+a{color:#6230a4}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #b17bed;outline-offset:3px}
 .site-header{background:linear-gradient(130deg,#7136b9,#a96de8);color:#fff;text-align:center;padding:28px 20px 22px}
 .site-header .brand{color:#fff;text-decoration:none;font-size:clamp(1.7rem,5vw,2.4rem);font-weight:800;letter-spacing:-.05em;line-height:1.2}
 .site-header p{margin:5px 0 0;color:#f6ecff;font-size:.93rem}
@@ -35,4 +35,4 @@ a{color:#6230a4}a[href*="prettyus-rules"],a[href*="22-prettyus-rules"],a[href*="
 .page-content .home-more-links a{padding:13px 16px;border-radius:17px;background:#fff;box-shadow:0 4px 16px #67419212;border:1px solid #e8d8f8;text-align:center;text-decoration:none;font-weight:700;color:#6230a4}
 .site-footer{border-top:1px solid #e8def2;text-align:center;padding:22px 14px 35px;color:var(--muted);font-size:.9rem}
 .site-footer a{margin:0 9px;text-decoration:none}
-@media(max-width:660px){.container{margin-top:18px;padding:0 12px}.site-nav .nav-scroll{justify-content:flex-start}.page-heading{padding:17px 18px}.page-content .vertical-menu>a{padding:13px 12px}}
+@media(max-width:660px){.container{margin-top:18px;padding:0 12px}.site-nav .nav-scroll{justify-content:flex-start}.page-heading{padding:17px 18px}.page-content .vertical-menu>a{padding:13px 12px}footer a[href*="rules"],.footer a[href*="rules"],footer a[href*="Rules"],.footer a[href*="Rules"]{display:none!important}}

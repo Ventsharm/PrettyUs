@@ -5,7 +5,7 @@
 <meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="#8045cd" name="theme-color"/><meta content="PrettyUs independent Avon representative: shopping, local orders, guidance and information." name="description"/>
 <title>Building Your Avon Business | PrettyUs</title>
-<link href="assets/favicon.png" rel="icon"/><style>
+<link href="Icon-192.png" rel="icon"/><style>
 
 :root{--purple:#8045cd;--deep:#5a289a;--bg:#f7f3fd;--ink:#292138;--muted:#756b81;--line:#e8dcf5;--max:920px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#f4effc 0%,#fff 60%);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:16px;line-height:1.65}
@@ -47,6 +47,11 @@ a{color:#6230a4}a:focus-visible,button:focus-visible,input:focus-visible,textare
 
 
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="Icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PrettyUs">
 </head>
 <body>
 <header class="site-header"><a class="brand" href="index.html">PrettyUs 💜</a><p>Your independent Avon beauty space</p></header>
@@ -141,4 +146,11 @@ a{color:#6230a4}a:focus-visible,button:focus-visible,input:focus-visible,textare
 </p></div>
 </div></main>
 <footer class="site-footer"><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="https://www.ventsharmblogs.co.uk/p/privacy-policy.html">Privacy Policy</a><p>PrettyUs · Independent Avon Representative</p></footer>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./service-worker.js').catch(function () {});
+  }, { once: true });
+}
+</script>
 </body></html>

@@ -38,4 +38,16 @@ a{color:#6230a4}a:focus-visible,button:focus-visible,input:focus-visible,textare
 .site-footer a{margin:0 9px;text-decoration:none}
 @media(max-width:660px){.container{margin-top:18px;padding:0 12px}.site-nav .nav-scroll{justify-content:flex-start}.page-heading{padding:17px 18px}.page-content .vertical-menu>a{padding:13px 12px}}
 
-</style></head><body><header class="site-header"><a class="brand" href="index.html">PrettyUs 💜</a></header><main class="container"><div class="page-heading"><h1>Page not found</h1><p>That link no longer works. Browse our recovered pages from the homepage.</p><a href="index.html">Back to PrettyUs home →</a></div></main></body></html>
+</style><link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="Icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PrettyUs">
+</head><body><header class="site-header"><a class="brand" href="index.html">PrettyUs 💜</a></header><main class="container"><div class="page-heading"><h1>Page not found</h1><p>That link no longer works. Browse our recovered pages from the homepage.</p><a href="index.html">Back to PrettyUs home →</a></div></main><script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./service-worker.js').catch(function () {});
+  }, { once: true });
+}
+</script>
+</body></html>

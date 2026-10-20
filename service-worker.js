@@ -1,10 +1,10 @@
-const CACHE_NAME = 'prettyus-pwa-v1';
+const CACHE_NAME = 'prettyus-pwa-v2-logo';
 const BASE = self.registration.scope;
 const FILES = [
   './', 'index.html', 'about.html', 'contact.html', 'submit-avon-order.html',
   'my-avon-journey.html', 'building-your-avon-business.html',
   'avon-representative-guide.html', 'more-ways-to-share-avon.html',
-  'why-shop-with-me.html', 'style.css', 'avon-order.js', 'manifest.webmanifest'
+  'why-shop-with-me.html', 'style.css', 'avon-order.js', 'manifest.webmanifest', 'Icon-192.png', 'Icon-512.png'
 ].map(path => new URL(path, BASE).href);
 
 self.addEventListener('install', event => {

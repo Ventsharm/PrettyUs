@@ -1,4 +1,4 @@
-const CACHE_NAME = 'prettyus-pwa-v3-copyright';
+const CACHE_NAME = 'prettyus-pwa-v4-ventsharm-copyright';
 const BASE = self.registration.scope;
 const FILES = [
   './', 'index.html', 'about.html', 'contact.html', 'submit-avon-order.html',
